@@ -1,0 +1,109 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Machine Learning Notes - Introduction}
+\author{}
+\date{March 2019}
+
+\begin{document}
+
+\maketitle
+%-------------------------------------------------
+\section{Primer - Probability and Statistics}
+
+\subsection{An introduction to Measure Theory}
+\subsubsection*{$\sigma$ algebra}
+\textbf{Definition}: Given a set $\Omega$, a $\sigma$-algebra on $Omega$ is a collection $\mathcal{A}$  \subset \:  $2^{\Omega}$ such that 
+\begin{enumerate}
+    \item $\mathcal{A}$ is non empty 
+    \item $\mathcal{A}$ is closed under compliments i.e.\ if $E \in \mathcal{A} \implies E^{c} \in \mathcal{A}$
+    \item $\mathcal{A}$ is closed under countable unions i.e.\ if $E_{1}, E_{2}... \in \mathcal{A} \implies \bigcup\limits_{i=1}^{\infty} E_{i} \in \mathcal{A}$
+\end{enumerate}
+\textbf{Remarks}
+\begin{enumerate}
+    \item $\Omega \in \mathcal{A}$ \: (Proof: $E \subset \Omega , \: E \in \mathcal{A} \implies E^{c} \in \mathcal{A} \implies E \: \cup \: E^{c} \in \mathcal{A} \implies \Omega \in \mathcal{A}$)
+    \item $\phi \in \mathcal{A}$ \: (Proof: $\Omega \in \mathcal{A} \implies \Omega^{c} \in \mathcal{A} \implies \phi \in \mathcal{A}$)
+    \item $\mathcal{A}$ is closed under countable intersections too i.e. $E_{1}, E_{2}... \in \mathcal{A} \implies \bigcap\limits_{i=1}^{\infty} E_{i} \in \mathcal{A}$
+\end{enumerate}
+\textbf{Examples}:
+\begin{enumerate}
+    \item If $\Omega$ = $\{0,1\} \implies 2^{\Omega} = \{ \phi,\: \{0\},\: \{1\},\: \{0,1\} \}$, where $2^{\Omega}$ is called the Power Set
+    \item Let $\Omega = \{1,2,3,4\}$ , then $\mathcal{A} = \{ \phi, \{1,2,3,4\}, \{1,2\} , \{3,4\}\}$ is a $\sigma$ - algebra 
+    \item $\mathcal{A} = \{\phi,\: \Omega\}$ is also a $\sigma$-algebra
+    \item If $\Omega = \mathbb{R}$, the Borel $\sigma$ - algebra is $\mathcal{B} = \sigma(\mathcal{T})$ where $\mathcal{T}$ = all open sets of $\mathbb{R}$ . Any set $B \in \mathcal{B}$ is a Borel set
+\end{enumerate}
+\newpage
+\subsubsection*{Measure}
+\textbf{Definition}: A measure $\mu$ on $\Omega$ with $\sigma$-algebra $\mathcal{A}$ is a function $\mu : \mathcal{A} \xrightarrow{} [0,\infty]$ s.t.
+\begin{enumerate}
+    \item $\mu(\phi) = 0$
+    \item Countable additivity - $\mu(\: \bigcup\limits_{i=1}^{\infty}E_{i} \:) = \sum\limits_{i=1}^{\infty} \mu(E_{i})$ where $E_1, E_2... \in \mathcal{A}$ are pairwise disjoint sets 
+\end{enumerate}
+
+\subsubsection*{Basic Properties Probability Measures}
+A measure space is described by $(\Omega, \mathcal{A}, \mu)$. Similarly, a probability space is described by $(\Omega, \mathcal{A}, P)$ where $\Omega$ = sample space, $\mathcal{A}$ = $\sigma$-algebra, $P$ = Probability measure
+\begin{enumerate}
+    \item $P(\Omega) = 1$
+    \item \textbf{Monotonicity}: If $E,F \in \mathcal{A}, E \subset F$ then $P(E) < P(F)$
+    \item \textbf{Subadditivity}: If $E_{1}, E_{2}... \in \mathcal{A}$ then $P(\bigcup\limits_{i=1}^{\infty}E_i) \leq \sum\limits_{i=1}^{\infty} P(E_i)$
+    \item \textbf{Continuity from above}: If $E_{1}, E_{2}... \in \mathcal{A}$ and $E_1 \subseteq E_2 \subseteq$... then $P(\: \bigcup\limits_{i=1}^{\infty}E_{i} \:) = \lim_{i\to\infty} P(E_i)$
+    \item \textbf{Continuity from below}: If $E_1, E_2 .... \in \mathcal{A}$ and $E_1 \supseteq E_2 \supseteq$... \: and $P(E_1) < \infty$ then, \: $P(\bigcap\limits_{i=1}^{\infty}E_i) = \lim_{i \to\infty}P(E_i)$
+\end{enumerate}
+
+\subsubsection*{More properties of probability measures}
+Let $E,F \in A$ then 
+\begin{enumerate}
+    \item $P(E \cup F) = P(E) + P(F) - P(E \cap F)$
+    \item $P(E) = 1 - P(E^{c})$
+    \item $P(E \cap F^{c}) = P(E) - P(E \cap F)$
+    \item $P(\: \bigcup\limits_{i=1}^{n}E_{i} \:) \leq \sum\limits_{i=1}^{n}P(E_i)$ 
+    \item Inclusion Exclusion Formula (Too long to write but important)  
+\end{enumerate}
+
+\subsubsection*{Random Variable}
+\subsubsection*{PDF and CDF}
+\subsubsection*{Expectation and Variance}
+\subsubsection*{Poisson Distriubtion}
+\subsubsection*{Exponential Distribution}
+\subsubsection*{Hyper-geometric Distribution}
+\subsubsection*{Normal Distribution}
+\subsubsection*{Central Limit Theorem}
+\subsubsection*{Hypothesis Testing and p-value}
+\subsubsection*{Statistical Tests - $\chi, z, t, F$}
+\subsubsection*{ANOVA}
+
+
+
+
+
+%-------------------------------------------------
+\section{Primer - Linear Algebra}
+
+%-------------------------------------------------
+\section{Primer - Other Useful Math}
+
+%-------------------------------------------------
+\section{Least Squares}
+
+%-------------------------------------------------
+\section{Nearest Neighbours}
+
+%-------------------------------------------------
+\section{Statistical Decision Theory}
+
+%-------------------------------------------------
+\section{Local Methods in Higher Dimensions}
+
+%-------------------------------------------------
+\section{Statistical Models, Supervised Learning and Function Approximation}
+%-------------------------------------------------
+\section{Structured Regression Models}
+%-------------------------------------------------
+\section{Classes of Restricted Estimators}
+%-------------------------------------------------
+\section{Bias-Variance Trade-off}
+%-------------------------------------------------
+\end{document}
