@@ -4,19 +4,21 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\title{Machine Learning Notes - Introduction}
-\author{}
+\title{Everything you need to know}
+\author{Mihir Bhatia}
 \date{March 2019}
 
 \begin{document}
 
 \maketitle
+\tableofcontents
+\newpage
 %-------------------------------------------------
 \section{Primer - Probability and Statistics}
 
 \subsection{An introduction to Measure Theory}
-\subsubsection*{$\sigma$ algebra}
-\textbf{Definition}: Given a set $\Omega$, a $\sigma$-algebra on $Omega$ is a collection $\mathcal{A}$  \subset \:  $2^{\Omega}$ such that 
+\subsubsection{$\sigma$ algebra}
+\textbf{Definition}: Given a set $\Omega$, a $\sigma$-algebra on $\Omega$ is a collection $\mathcal{A}$  \subset \:  $2^{\Omega}$ such that 
 \begin{enumerate}
     \item $\mathcal{A}$ is non empty 
     \item $\mathcal{A}$ is closed under compliments i.e.\ if $E \in \mathcal{A} \implies E^{c} \in \mathcal{A}$
@@ -35,15 +37,14 @@
     \item $\mathcal{A} = \{\phi,\: \Omega\}$ is also a $\sigma$-algebra
     \item If $\Omega = \mathbb{R}$, the Borel $\sigma$ - algebra is $\mathcal{B} = \sigma(\mathcal{T})$ where $\mathcal{T}$ = all open sets of $\mathbb{R}$ . Any set $B \in \mathcal{B}$ is a Borel set
 \end{enumerate}
-\newpage
-\subsubsection*{Measure}
+\subsubsection{Measure}
 \textbf{Definition}: A measure $\mu$ on $\Omega$ with $\sigma$-algebra $\mathcal{A}$ is a function $\mu : \mathcal{A} \xrightarrow{} [0,\infty]$ s.t.
 \begin{enumerate}
     \item $\mu(\phi) = 0$
     \item Countable additivity - $\mu(\: \bigcup\limits_{i=1}^{\infty}E_{i} \:) = \sum\limits_{i=1}^{\infty} \mu(E_{i})$ where $E_1, E_2... \in \mathcal{A}$ are pairwise disjoint sets 
 \end{enumerate}
 
-\subsubsection*{Basic Properties Probability Measures}
+\subsection{Probability}
 A measure space is described by $(\Omega, \mathcal{A}, \mu)$. Similarly, a probability space is described by $(\Omega, \mathcal{A}, P)$ where $\Omega$ = sample space, $\mathcal{A}$ = $\sigma$-algebra, $P$ = Probability measure
 \begin{enumerate}
     \item $P(\Omega) = 1$
@@ -53,7 +54,7 @@ A measure space is described by $(\Omega, \mathcal{A}, \mu)$. Similarly, a proba
     \item \textbf{Continuity from below}: If $E_1, E_2 .... \in \mathcal{A}$ and $E_1 \supseteq E_2 \supseteq$... \: and $P(E_1) < \infty$ then, \: $P(\bigcap\limits_{i=1}^{\infty}E_i) = \lim_{i \to\infty}P(E_i)$
 \end{enumerate}
 
-\subsubsection*{More properties of probability measures}
+\subsubsection{More properties of probability measures}
 Let $E,F \in A$ then 
 \begin{enumerate}
     \item $P(E \cup F) = P(E) + P(F) - P(E \cap F)$
@@ -63,47 +64,161 @@ Let $E,F \in A$ then
     \item Inclusion Exclusion Formula (Too long to write but important)  
 \end{enumerate}
 
-\subsubsection*{Random Variable}
-\subsubsection*{PDF and CDF}
-\subsubsection*{Expectation and Variance}
-\subsubsection*{Poisson Distriubtion}
-\subsubsection*{Exponential Distribution}
-\subsubsection*{Hyper-geometric Distribution}
-\subsubsection*{Normal Distribution}
-\subsubsection*{Central Limit Theorem}
-\subsubsection*{Hypothesis Testing and p-value}
-\subsubsection*{Statistical Tests - $\chi, z, t, F$}
-\subsubsection*{ANOVA}
+\subsubsection{Random Variable}
+Let ($\Omega, \mathcal{F}, \mathbb{R})$ be a probability space, then a random variable is a measurable function \\ $X : \Omega \xrightarrow{} \mathbb{R}$ i.e. it is a mapping from the sample space to any real number. \\ \\ The only thing that is random in probability is the selection of an event $\omega$ from the sample space $\Omega$. A random variable $X(\omega)$ is a discrete function that maps an event into the real number line. 
+\subsubsection{PDF and CDF}
+Given a random variable $X$, the cumulative distribution function is a real valued function $F_x$ which calculates the probability $P(X \leq x)$
+\begin{equation*}
+    F_x(x) = P(X \leq x)
+\end{equation*}
+The probability density function $f_x(x)$ can be derived from here:
+\begin{equation*}
+    P(X \leq x) = \int_{-\infty}^{x} f_x(x) dx
+\end{equation*}
+\subsubsection{Expectation and Variance}
+Expectation of a random variable can be defined as:
+\begin{equation*}
+    E(X) = \int_{-\infty}^{\infty} x f_x(x) \:dx
+\end{equation*}
+Variance can be defined as:
+\begin{equation*}
+    var(X) = \int_{-\infty}^{\infty} (x - \mu)^{2} \: f_x(x)\: dx
+\end{equation*}
+\begin{equation*}
+    var(X) = E[(X - \mu)^{2}]
+\end{equation*}
+\begin{equation*}
+    var(X) = E(X^2) - [E(X)]^{2}
+\end{equation*}
+Now let's use the above definitions of PDF and CDF to find the mean and expectation of some important distributions 
 
+\subsection{Examples of Random Variables}
+\subsubsection{Binomial}
+If $X$ is a binomial random variable $X(n,k)$. The probability that one gets k heads from n coin tosses. $p$ is the probability of getting heads: 
+\begin{equation*}
+P(X = k) = \binom{n}{k} p^{k}(1-p)^{n-k}
+\end{equation*}
+This is a discrete random variable with mean = $\sum\limits_{x =0}^{n} P(X = x)\:x\: $
+\begin{equation*}
+    E[X] = \sum\limits_{x = 0}^{n} \binom{n}{x} p^{x}(1-p)^{n-x} x = np\sum\limits_{x = 0}^{n} \binom{n-1}{x-1} p^{x-1}(1-p)^{n-x} 
+\end{equation*}
+\begin{equation*}
+    E[X] = np*[(1-p) + p]^{n-1} = \textbf{np}
+\end{equation*}\\
+Similarly, $var[X] = E[X^{2}] - (E[X])^{2}$, so without proof
+\begin{equation*}
+    var[X] = \sum\limits_{x = 0}^{n} \binom{n}{x} p^{x}(1-p)^{n-x} x^{2} - n^{2}p^{2} = \textbf{np(1-p)} 
+\end{equation*}
+\subsubsection{Poisson Distribution}
+\subsubsection{Exponential Distribution}
+\subsubsection{Hyper-geometric Distribution}
+\subsubsection{Normal Distribution}
 
+\subsection{Important Concepts in Statistics}
+\subsubsection{Correlation}
+\subsubsection{Central Limit Theorem}
+\subsubsection{Hypothesis Testing and p -value}
+\subsubsection{Statistical Tests - $\chi, z, t, F$ tests + A/B Testing} 
+\subsubsection{ANOVA}
+\subsubsection{Maximum Likelihood Estimate}
 
+\newpage
 
 
 %-------------------------------------------------
 \section{Primer - Linear Algebra}
 
+
+\newpage
+
+
 %-------------------------------------------------
 \section{Primer - Other Useful Math}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+\newpage
+
+\section{Introduction to Statistical Learning}
+%-------------------------------------------------
+\subsection{Least Squares}
 
 %-------------------------------------------------
-\section{Least Squares}
+\subsection{Nearest Neighbours}
 
 %-------------------------------------------------
-\section{Nearest Neighbours}
+\subsection{Statistical Decision Theory}
 
 %-------------------------------------------------
-\section{Statistical Decision Theory}
+\subsection{Local Methods in Higher Dimensions}
 
 %-------------------------------------------------
-\section{Local Methods in Higher Dimensions}
+\subsection{Statistical Models, Supervised Learning and Function Approximation}
+%-------------------------------------------------
+\subsection{Structured Regression Models}
+%-------------------------------------------------
+\subsection{Classes of Restricted Estimators}
+%-------------------------------------------------
+\subsection{Bias-Variance Trade-off}
+%-------------------------------------------------
 
-%-------------------------------------------------
-\section{Statistical Models, Supervised Learning and Function Approximation}
-%-------------------------------------------------
-\section{Structured Regression Models}
-%-------------------------------------------------
-\section{Classes of Restricted Estimators}
-%-------------------------------------------------
-\section{Bias-Variance Trade-off}
-%-------------------------------------------------
+
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+
+
+\newpage 
+
+
+\section{Linear Models}
+\subsection{Linear Regression}
+\subsection{Logistic Regression}
+\subsection{Generalized Linear Models}
+
+\newpage
+
+\section{GAM, MARS}
+
+\newpage
+
+
+\section{Decision Trees}
+\subsection{Concept}
+\subsection{CART}
+\subsection{Random Forests}
+\subsection{Bayesian Additive Regression Trees}
+
+\newpage
+
+\section{Support Vector Machines}
+\subsection{Derivation}
+\subsection{Kernels}
+\subsection{Variations of SVM and notes about Python and R packages for imbalanced data}
+
+\newpage
+
+\section{Bayesian Analysis}
+
+\newpage
+
+\section{Computational Statistics}
+    \subsection{EM Algorithm}
+    \subsection{Monte Carlo Methods}
+    \subsection{Markov Chain Monte Carlo Methods}
+    \subsection{Gradient Based Optimization Methods}
+        \subsubsection{Conjugate Gradient}
+        \subsubsection{Quasi-Newton}
+    \subsection{Intro to Convex Optimization}
+
+\newpage
+
+\section{Neural Networks} %REVISE ANDREW NG 
+    \subsection{Convolution}
+    \subsection{Mathematics of Forward and Back Propagation - Condensed}
+    \subsection{Examples of CNNs}
+        \subsubsection{RCNN, Fast RCNN, Faster RCNN}
+        \subsubsection{YOLO - You Only Look Once}
+    \subsection{Recurrent Neural Networks}
+    \subsection{Reinforcement Learning} %check the medium article that contains everything 
+    \subsection{Generalized Adverserial Networks}
 \end{document}
