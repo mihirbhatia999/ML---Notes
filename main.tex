@@ -3,7 +3,9 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{hyperref}
+\usepackage{calc}
+\usepackage{mathtools}
 \title{Everything you need to know}
 \author{Mihir Bhatia}
 \date{March 2019}
@@ -116,10 +118,24 @@ Similarly, $var[X] = E[X^{2}] - (E[X])^{2}$, so without proof
 
 \subsection{Important Concepts in Statistics}
 \subsubsection{Correlation}
+Correlation is a bivariate analysis that measures the strength of association between two variables and the direction of the relationship.
+The Pearson's correlation coefficient $r$ lies in between -1 \& 1 and helps explain the strength of linear relationship between two variables\newline 
+\begin{equation*}
+    r = \frac{\sum(x_i - \Bar{x})(y_i - \Bar{y})}{(\sqrt{\sum(x_i - \Bar{x})^{2}\sum(y_i - \Bar{y})^{2}}}
+\end{equation*}
+Assumptions while using Pearson's correlation:
+\begin{itemize}
+    \item Homoscedasticity - Error are distributed equally about the regression line and not skewed towards one side of it
+    \item Linear Relation between the two variable (no curvilinear relation can be interpreted using $r$
+    \item Both variables have normal distribution
+\end{itemize}
 \subsubsection{Central Limit Theorem}
 \subsubsection{Hypothesis Testing and p -value}
+\subsubsection{Linear Regression Assumptions}
+\subsubsection{Linear Regression Types}
 \subsubsection{Statistical Tests - $\chi, z, t, F$ tests + A/B Testing} 
 \subsubsection{ANOVA}
+
 \subsubsection{Maximum Likelihood Estimate}
 
 \newpage
@@ -142,16 +158,99 @@ Similarly, $var[X] = E[X^{2}] - (E[X])^{2}$, so without proof
 \section{Introduction to Statistical Learning}
 %-------------------------------------------------
 \subsection{Least Squares}
+Given a vector of inputs $X^T = (1,X_{1}, X_{2},...,X_{p})$. Then we predict the output Y via the model using vector of coefficients $\hat{\beta} = (\hat{\beta_0}, \hat{\beta_1},...,\hat{\beta{p}})$
+\begin{equation}
+    \hat{Y} = X^{T}\hat{\beta}
+\end{equation}
+
+We minimize the residual sum of squares (RSS):
+\begin{equation}
+    RSS(\beta) = \sum_{i =1}^{N}(y_{i} - x_{i}^{T}\beta)^{2}
+\end{equation}
+\begin{equation}
+    RSS(\beta) = (y - \textbf{X}\beta)^{T}(y - \textbf{X}\beta)    
+\end{equation}
+\textbf{X} is an $N * p$ matrix with each row as an input vector $x_{1}...x_{N}$. Differentiating wrt to $\beta$ we get, 
+\begin{equation}
+    \hat{\beta} = (\textbf{X}^{T}\textbf{X})^{-1}\textbf{X}^{T}y
+\end{equation}
+An arbitrary point $x_{o}$ would yield $\hat{y} = x_{o}^{T}\hat{\beta}$
+%-------------------------------------------------
+
+\subsection{Gradient Descent}
+
 
 %-------------------------------------------------
 \subsection{Nearest Neighbours}
-
+Let $N_{k}(x)$ be the set of $k$ nearest neighbours to a point $x$. Taking $\hat{Y}$ has an estimate, we can create a classification model, where in if $\hat{Y} > 0.5$ then the point is in the class where $y=1$, else it is in class where $y=0$
+\begin{equation}
+    \frac{1}{k}\sum_{x \in N_{k}(x)} y_i
+\end{equation}
+Basically, the k nearest neighbours are voting to see which class a particular point lies in. Usually we run k-nearest neighbours for multiple values of k and then make a plot to see which gives us the best results on "test" data (to make sure that we are not overfitting) 
 %-------------------------------------------------
 \subsection{Statistical Decision Theory}
+Let $X \in \mathbb{R}^{p}$ and $Y \in \mathbb{R}$  with a joint probability distribution $P(X,Y)$. Our aim is to try to approximate a function $f(X)$ to predict output $Y$ from input $X$. 
+\\ \\Statistical decision theory requires a loss funtion $L(Y,f(X))$ which penalizes errors in prediction. Lease squares is one of the most common loss functions. $L(Y,f(X)) = (Y - f(X))^{2}$. This leads us to the critereon for choosing f: 
+\begin{equation}
+    EPE(f) = E(Y - f(X))^{2}
+\end{equation}
+\begin{equation}
+    EPE(f) = \int [y - f(x)]^{2} Pr(dx,dy)
+\end{equation}
+where EPE = expected predcition error. By conditioning on X we can write EPE as: 
+\begin{equation}
+    EPE(f) = E_x E_{Y|X}([Y - f(X)]^{2} | X)
+\end{equation}
+we want to minimize the expected EPE to allow us to find f(x). Thus, 
+\begin{equation}
+    f(x) = argmin_c E_{Y|X}((Y-c)^{2} | X = x)
+\end{equation}
+The solution to this equation is:
+\begin{equation}
+    f(x) = E(Y | X = x)
+\end{equation}
+the conditional expectation, also known as the regression function. Thus the best prediction of Y is at any point X = x is the conditional mean, when using least squares as the loss function. (\textbf{PERSONAL NOTE:} Here we are assuming that the Y we are trying to predict has a certain distribution with a certain probability density and taking the conditional mean at point $X = x$ this the way to minimize the least square loss function)
+\\ \\ \textbf{PERSONAL NOTE:} Joint probability distribution $P(X,Y)$ can just be taken as $P(X=x and Y=x)$ for discrete cases. For continuous case refer to  \href{https://en.wikipedia.org/wiki/Joint_probability_distribution#math_Eq.1}{\textit{this link}}  \\ \\ 
+
+The k-nearest neighbour takes a ready-made function $f(x)$ and tries to implement it to find the right fit (to classify data points). Our aim is to find the $f(x)$ with the $k$ that reduces the testing error.  
+
+\begin{equation}
+    f(x) = Ave( y_i | x_i \in N_k(x))
+\end{equation}
+$Ave$ denotes the average of the k nearest neighbours to the point $x_{i}$ 
+There are 2 approximations that lead us to this: 
+\begin{itemize}
+    \item Expectation is approximated by averaging over the sample data 
+    \item Conditioning at point is relaxed to conditioning on some region that is close to the target point (by selecting k points and taking their average instead of integrating over the joint probability distribution to find expectation)  
+\end{itemize}
+
+For $k, N \xrightarrow{} \infty$ such that $k/N \xrightarrow{} 0$, $f(x) \xrightarrow{} E(Y|X=x)$
+\\ \\
+\textbf{CLASSIFICATION PROBLEMS}
+\\ \\
+In case of classification problems we use a different loss function for penalizing prediction errors. An estimate $\hat{G}$ will assume values from a set of values $\mathcal{G}$. We represent the loss function $\textbf{L}$ as a set of values in $K X K$ matrix where $K = card(\mathcal{G})$. Diagonal elements of $\textbf{L}$ will be 0 and other elements $L(k,l)$ are the prices paid to classify point in class $\mathcal{G}_k$ as $\mathcal{G}_l$. The expected prediction error: 
+\begin{equation}
+    EPE = E[L(G,\hat{G}(X)]    
+\end{equation}
+where expectation is taken against the joint probability distribution $Pr(G,X)$. 
+\begin{equation}
+    EPE = E_X \sum_{k=1}^{K} L[\mathcal{G}_{k}, \hat{G}(X)] Pr(\mathcal{G}_k | X)
+\end{equation}
+Thus class approximator function $\hat{G}(x)$ can be found by 
+\begin{equation}
+    \hat{G}(x) = argmin_{g \in \mathcal{G}}\sum_{k=1}^{K} L[\mathcal{G}_{k}, g] Pr(\mathcal{G}_k | X = x)
+\end{equation}
+Thus 
+\begin{align}
+    \hat{G}(x) = \mathcal{G}_k \mbox{ if } Pr(\mathcal{G}_k | X = x) = \max_{g \in \mathcal{G}} Pr(g | X = x)
+\end{align}
+This solution is called \textbf{Bayes Classifier}. It says that we classify the most probable class by using the conditional discrete distribution $Pr(G|X)$. \\ \textbf{NOTE:} Since these TRUE probabilities are essentially never known, the \textbf{Bayes classifier} is more a theoretical concept and not something that you can actually use in practice. However, it's a helpful idea when doing simulation studies where you generate the data yourself and therefore know the probabilities. This allows you to compare a given classification rule to the Bayes classifier which has the lowest error rate among all classifiers.
+\\ \\
+We finally realise that k-nearest is a local method of these approximator functions where we are relaxing the use of all points as well relaxing the use of expectation (and instead just averaging over neighbouring points) 
 
 %-------------------------------------------------
 \subsection{Local Methods in Higher Dimensions}
-
+CURSE OF DIMENSIONALITY
 %-------------------------------------------------
 \subsection{Statistical Models, Supervised Learning and Function Approximation}
 %-------------------------------------------------
@@ -173,6 +272,7 @@ Similarly, $var[X] = E[X^{2}] - (E[X])^{2}$, so without proof
 \section{Linear Models}
 \subsection{Linear Regression}
 \subsection{Logistic Regression}
+\subsection{Difference between Logistic Regression and Perceptron}
 \subsection{Generalized Linear Models}
 
 \newpage
